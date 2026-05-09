@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dental Clinic Hagens — Premium Dental Care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #112240;
+    --teal: #0ea5a0;
+    --teal-light: #2dd4d0;
+    --gold: #c9a84c;
+    --cream: #f7f3ed;
+    --white: #ffffff;
+    --gray: #8892a4;
+    --text: #1e2d3d;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* ─── CANVAS BG ─── */
+  #bg-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.2rem 4rem;
+    transition: background 0.4s, backdrop-filter 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(10,22,40,0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(14,165,160,0.15);
+  }
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+  }
+  .logo-icon {
+    width: 42px; height: 42px;
+    background: linear-gradient(135deg, var(--teal), var(--gold));
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    box-shadow: 0 4px 15px rgba(14,165,160,0.4);
+  }
+  .logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--white);
+    line-height: 1.1;
+  }
+  .logo-sub { font-size: 0.65rem; color: var(--teal-light); letter-spacing: 0.12em; text-transform: uppercase; font-family: 'DM Sans', sans-serif; font-weight: 400; }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.75); text-decoration: none; font-size: 0.875rem; font-weight: 500; letter-spacing: 0.04em; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--teal-light); }
+  .nav-cta {
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    color: var(--navy);
+    padding: 0.65rem 1.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    box-shadow: 0 4px 20px rgba(14,165,160,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .nav-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(14,165,160,0.5); }
+
+  /* hamburger */
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; z-index: 200; }
+  .hamburger span { width: 26px; height: 2px; background: var(--white); border-radius: 2px; transition: all 0.3s; }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
+
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(10,22,40,0.98);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a { color: var(--white); font-size: 1.5rem; text-decoration: none; font-family: 'Playfair Display', serif; transition: color 0.3s; }
+  .mobile-menu a:hover { color: var(--teal-light); }
+  .mobile-menu .nav-cta { font-size: 1rem; font-family: 'DM Sans', sans-serif; }
+
+  /* ─── HERO ─── */
+  #hero {
+    position: relative;
+    z-index: 10;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 0 4rem;
+  }
+  .hero-content { max-width: 700px; padding-top: 5rem; }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(14,165,160,0.12);
+    border: 1px solid rgba(14,165,160,0.3);
+    border-radius: 50px;
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem;
+    color: var(--teal-light);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero-badge .dot { width: 6px; height: 6px; background: var(--teal-light); border-radius: 50%; animation: pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.4;transform:scale(1.4)} }
+  
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    line-height: 1.08;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    animation: fadeDown 0.8s 0.1s ease both;
+  }
+  .hero-title em { font-style: italic; color: var(--teal-light); }
+  .hero-title .gold { color: var(--gold); }
+
+  .hero-desc {
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 2.5rem;
+    animation: fadeDown 0.8s 0.2s ease both;
+  }
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeDown 0.8s 0.3s ease both;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    color: var(--navy);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 0.95rem;
+    box-shadow: 0 8px 30px rgba(14,165,160,0.4);
+    transition: transform 0.25s, box-shadow 0.25s;
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 14px 40px rgba(14,165,160,0.55); }
+  .btn-secondary {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: transparent;
+    color: var(--white);
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255,255,255,0.25);
+    transition: border-color 0.25s, background 0.25s;
+  }
+  .btn-secondary:hover { border-color: var(--teal-light); background: rgba(14,165,160,0.08); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 3.5rem;
+    animation: fadeDown 0.8s 0.4s ease both;
+  }
+  .stat-item { display: flex; flex-direction: column; }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--teal-light); }
+  .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.5); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 0.2rem; }
+
+  /* ─── 3D TOOTH ─── */
+  .hero-3d {
+    position: absolute;
+    right: 4rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 380px;
+    height: 380px;
+    pointer-events: none;
+  }
+  #tooth-canvas { width: 100%; height: 100%; }
+
+  /* ─── SECTION BASE ─── */
+  section {
+    position: relative;
+    z-index: 10;
+    padding: 6rem 4rem;
+  }
+  .section-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 1rem;
+  }
+  .section-label::before { content: ''; width: 30px; height: 1px; background: var(--teal); }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    line-height: 1.15;
+    margin-bottom: 1rem;
+  }
+  .section-desc { color: rgba(255,255,255,0.55); line-height: 1.7; max-width: 560px; }
+
+  /* ─── SERVICES ─── */
+  #services { background: rgba(17,34,64,0.5); }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .service-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(14,165,160,0.12);
+    border-radius: 20px;
+    padding: 2rem;
+    transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--teal), var(--teal-light));
+    transform: scaleX(0);
+    transition: transform 0.3s;
+    transform-origin: left;
+  }
+  .service-card:hover { transform: translateY(-6px); border-color: rgba(14,165,160,0.35); box-shadow: 0 20px 50px rgba(14,165,160,0.12); }
+  .service-card:hover::before { transform: scaleX(1); }
+  .service-icon {
+    width: 54px; height: 54px;
+    background: linear-gradient(135deg, rgba(14,165,160,0.2), rgba(45,212,208,0.08));
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+    border: 1px solid rgba(14,165,160,0.2);
+  }
+  .service-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; margin-bottom: 0.6rem; }
+  .service-card p { font-size: 0.875rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+  /* ─── ABOUT ─── */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-card-main {
+    background: linear-gradient(135deg, rgba(14,165,160,0.15), rgba(14,165,160,0.04));
+    border: 1px solid rgba(14,165,160,0.2);
+    border-radius: 24px;
+    padding: 3rem;
+    text-align: center;
+  }
+  .about-tooth-3d {
+    width: 200px; height: 200px;
+    margin: 0 auto 1.5rem;
+  }
+  #about-tooth { width: 100%; height: 100%; }
+  .about-card-main p { color: rgba(255,255,255,0.6); font-size: 0.95rem; line-height: 1.7; }
+  .about-badge-float {
+    position: absolute;
+    bottom: -1.5rem; right: -1.5rem;
+    background: linear-gradient(135deg, var(--gold), #e8c56a);
+    border-radius: 16px;
+    padding: 1.2rem 1.5rem;
+    color: var(--navy);
+    font-weight: 700;
+    box-shadow: 0 10px 30px rgba(201,168,76,0.35);
+  }
+  .about-badge-float .big { font-family: 'Playfair Display', serif; font-size: 2rem; display: block; }
+  .about-badge-float .small { font-size: 0.75rem; opacity: 0.75; }
+
+  .about-text { }
+  .about-text .section-desc { margin-bottom: 1.5rem; }
+  .about-features { list-style: none; display: flex; flex-direction: column; gap: 0.8rem; margin-top: 1.5rem; }
+  .about-features li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
+    padding: 0.75rem 1rem;
+    background: rgba(255,255,255,0.03);
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.06);
+  }
+  .check { color: var(--teal-light); font-size: 1rem; flex-shrink: 0; margin-top: 0.1rem; }
+
+  /* ─── WHY US ─── */
+  #why { background: rgba(17,34,64,0.4); }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .why-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: transform 0.3s, border-color 0.3s;
+  }
+  .why-card:hover { transform: translateY(-5px); border-color: rgba(14,165,160,0.3); }
+  .why-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--teal), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .why-card h4 { font-size: 0.95rem; margin: 0.5rem 0; font-weight: 600; }
+  .why-card p { font-size: 0.8rem; color: rgba(255,255,255,0.45); line-height: 1.6; }
+
+  /* ─── REVIEWS ─── */
+  #reviews { }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 3.5rem;
+  }
+  .review-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    transition: transform 0.3s;
+  }
+  .review-card:hover { transform: translateY(-4px); }
+  .stars { color: var(--gold); font-size: 0.85rem; letter-spacing: 2px; margin-bottom: 1rem; }
+  .review-text { font-size: 0.9rem; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 1.25rem; font-style: italic; }
+  .reviewer { display: flex; align-items: center; gap: 0.75rem; }
+  .reviewer-avatar {
+    width: 38px; height: 38px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--teal), var(--navy-mid));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem;
+    border: 2px solid rgba(14,165,160,0.3);
+  }
+  .reviewer-name { font-size: 0.9rem; font-weight: 600; }
+  .reviewer-since { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+  .quote-mark { position: absolute; top: 1.5rem; right: 1.5rem; font-size: 4rem; color: rgba(14,165,160,0.1); font-family: 'Playfair Display', serif; line-height: 1; }
+
+  /* ─── BOOKING ─── */
+  #contact {
+    background: linear-gradient(135deg, rgba(14,165,160,0.12), rgba(17,34,64,0.8));
+    border-top: 1px solid rgba(14,165,160,0.15);
+    border-bottom: 1px solid rgba(14,165,160,0.15);
+  }
+  .contact-inner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+  }
+  .contact-info h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem; }
+  .contact-info p { color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 2rem; }
+  .info-items { display: flex; flex-direction: column; gap: 1.2rem; }
+  .info-item {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .info-icon {
+    width: 42px; height: 42px;
+    background: rgba(14,165,160,0.12);
+    border: 1px solid rgba(14,165,160,0.2);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+  }
+  .info-item-text { }
+  .info-item-label { font-size: 0.75rem; color: var(--teal); letter-spacing: 0.06em; text-transform: uppercase; }
+  .info-item-val { font-size: 0.95rem; color: rgba(255,255,255,0.8); margin-top: 0.2rem; line-height: 1.5; }
+
+  /* Form */
+  .booking-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.78rem; color: rgba(255,255,255,0.5); letter-spacing: 0.05em; text-transform: uppercase; }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 0.85rem 1rem;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    transition: border-color 0.25s, background 0.25s;
+    outline: none;
+    width: 100%;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--teal);
+    background: rgba(14,165,160,0.06);
+  }
+  .form-group select option { background: var(--navy-mid); color: var(--white); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .form-submit {
+    background: linear-gradient(135deg, var(--teal), var(--teal-light));
+    color: var(--navy);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 700;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s;
+    box-shadow: 0 6px 25px rgba(14,165,160,0.35);
+  }
+  .form-submit:hover { transform: translateY(-2px); box-shadow: 0 10px 35px rgba(14,165,160,0.5); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative; z-index: 10;
+    background: rgba(6,13,26,0.9);
+    padding: 3rem 4rem 2rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 3rem;
+    margin-bottom: 2.5rem;
+  }
+  .footer-brand .logo { margin-bottom: 1rem; }
+  .footer-brand p { font-size: 0.85rem; color: rgba(255,255,255,0.4); line-height: 1.7; max-width: 280px; }
+  .footer-col h5 { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); margin-bottom: 1rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-col ul a { font-size: 0.875rem; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+  .footer-col ul a:hover { color: var(--teal-light); }
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding-top: 1.5rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+  }
+  .footer-rating { display: flex; align-items: center; gap: 0.5rem; }
+  .footer-stars { color: var(--gold); }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1100px) {
+    .hero-3d { display: none; }
+    #about { grid-template-columns: 1fr; gap: 3rem; }
+    .why-grid { grid-template-columns: repeat(2,1fr); }
+    .contact-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    section { padding: 4rem 1.5rem; }
+    #hero { padding: 0 1.5rem; min-height: 100vh; }
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .why-grid { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    footer { padding: 2.5rem 1.5rem 1.5rem; }
+    .footer-top { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    .about-badge-float { right: 0; bottom: -1rem; }
+  }
+  @media (max-width: 500px) {
+    .why-grid { grid-template-columns: 1fr; }
+    .hero-title { font-size: 2.2rem; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+  }
+
+  /* scroll bar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--navy); }
+  ::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- Animated background canvas -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="logo">
+    <div class="logo-icon">🦷</div>
+    <div>
+      <div class="logo-text">Dental Clinic Hagens</div>
+      <div class="logo-sub">Est. 1982 · Amstelveen</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a href="#contact" class="nav-cta">Book Appointment</a>
+  <div class="hamburger" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="closeMobile()">Services</a>
+  <a href="#about" onclick="closeMobile()">About</a>
+  <a href="#why" onclick="closeMobile()">Why Us</a>
+  <a href="#reviews" onclick="closeMobile()">Reviews</a>
+  <a href="#contact" onclick="closeMobile()">Contact</a>
+  <a href="#contact" class="nav-cta" onclick="closeMobile()">Book Appointment</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="dot"></span>
+      Accepting New Patients · Amstelveen
+    </div>
+    <h1 class="hero-title">
+      Your Smile,<br><em>Expertly</em><br>Cared For
+    </h1>
+    <p class="hero-desc">
+      Dental Clinic Hagens combines over 40 years of family expertise with the latest dental technology. Preventive, aesthetic, and emergency care — all in a warm, welcoming environment.
+    </p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">
+        📅 Book Appointment
+      </a>
+      <a href="#services" class="btn-secondary">
+        Explore Services →
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">40+</span>
+        <span class="stat-label">Years Experience</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">4.4★</span>
+        <span class="stat-label">Google Rating</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-num">2</span>
+        <span class="stat-label">Clinic Locations</span>
+      </div>
+    </div>
+  </div>
+  <div class="hero-3d">
+    <canvas id="tooth-canvas"></canvas>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="section-label">What We Offer</div>
+  <h2 class="section-title">Comprehensive Dental <br>Care for Every Need</h2>
+  <p class="section-desc">From routine check-ups to advanced aesthetic treatments, our team provides gentle, professional care for patients of all ages.</p>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-icon">🦷</div>
+      <h3>General Dentistry</h3>
+      <p>Regular check-ups, cleanings, fillings, and preventive care to keep your teeth healthy and strong for life.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">✨</div>
+      <h3>Cosmetic Dentistry</h3>
+      <p>Teeth whitening, veneers, and aesthetic treatments designed to give you the confident, radiant smile you deserve.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🔩</div>
+      <h3>Dental Implants</h3>
+      <p>State-of-the-art implant solutions to replace missing teeth with natural-looking, long-lasting results.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🧒</div>
+      <h3>Children's Dentistry</h3>
+      <p>A gentle, patient approach for our youngest visitors. We make the dentist a positive, fear-free experience from the start.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🚨</div>
+      <h3>Emergency Care</h3>
+      <p>Dental emergencies don't wait. We accommodate urgent cases and work to relieve your pain as quickly as possible.</p>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-icon">🫁</div>
+      <h3>Dental Hygiene</h3>
+      <p>Professional cleaning, oral hygiene coaching, and periodontal care to protect your gums and overall oral health.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-visual reveal">
+    <div class="about-card-main">
+      <div class="about-tooth-3d">
+        <canvas id="about-tooth"></canvas>
+      </div>
+      <p>"Quality and care come first. Love for the profession, great communication, and personal attention — these are what define us."</p>
+    </div>
+    <div class="about-badge-float">
+      <span class="big">1982</span>
+      <span class="small">Founded in Aruba</span>
+    </div>
+  </div>
+  <div class="about-text reveal">
+    <div class="section-label">Our Story</div>
+    <h2 class="section-title">A Family Legacy of<br><em style="font-style:italic;color:var(--teal-light)">Excellence</em></h2>
+    <p class="section-desc">
+      Dental Clinic Hagens is a family business founded by Dr. Harold Hagens in 1982 on Aruba after graduating from Vrije Universiteit Amsterdam. His daughter, Dr. Mandy Hagens, expanded the practice to Amstelveen, Netherlands — bringing the same values of quality and personal care.
+    </p>
+    <p class="section-desc" style="margin-top:0.75rem;">
+      We treat patients of all ages with the newest techniques and the finest materials, ensuring you always receive the highest standard of care in a warm, welcoming setting.
+    </p>
+    <ul class="about-features">
+      <li><span class="check">✓</span> Latest dental technology &amp; materials</li>
+      <li><span class="check">✓</span> Extra attention for anxious patients &amp; children</li>
+      <li><span class="check">✓</span> Transparent pricing with clear communication</li>
+      <li><span class="check">✓</span> Family-run practice since 1982 — two continents</li>
+      <li><span class="check">✓</span> Free parking available at our Amstelveen clinic</li>
+    </ul>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div style="text-align:center;max-width:600px;margin:0 auto;">
+    <div class="section-label" style="justify-content:center;">Why Choose Us</div>
+    <h2 class="section-title">The Hagens Difference</h2>
+    <p class="section-desc" style="margin:0 auto;">We believe exceptional dental care is built on trust, expertise, and genuine compassion for every patient.</p>
+  </div>
+  <div class="why-grid" style="margin-top:3.5rem;">
+    <div class="why-card reveal">
+      <div class="why-num">40+</div>
+      <h4>Years of Excellence</h4>
+      <p>Four decades of trusted dental care across two clinics on two continents.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-num">4.4★</div>
+      <h4>Top Google Rating</h4>
+      <p>Consistently praised for skill, transparency, and patient comfort.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-num">0</div>
+      <h4>Fear Policy</h4>
+      <p>We work to leave the era of dental anxiety far behind — for kids and adults alike.</p>
+    </div>
+    <div class="why-card reveal">
+      <div class="why-num">∞</div>
+      <h4>Personal Attention</h4>
+      <p>Every patient receives dedicated, individualized care — never rushed.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="section-label">Patient Reviews</div>
+  <h2 class="section-title">What Our Patients Say</h2>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="quote-mark">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Probably the best dentist I've ever been to. Clear instructions on the procedure, transparency with finances, and careful, considerate care when it comes to fear of dental procedures.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">JM</div>
+        <div>
+          <div class="reviewer-name">J. Müller</div>
+          <div class="reviewer-since">Patient since 2021</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="quote-mark">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">Great service! I'm so happy with my dentist. You can always count on Dental Clinic Hagens. The team genuinely cares and always puts patients at ease.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">SV</div>
+        <div>
+          <div class="reviewer-name">S. van der Berg</div>
+          <div class="reviewer-since">Patient since 2019</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card reveal">
+      <div class="quote-mark">"</div>
+      <div class="stars">★★★★★</div>
+      <p class="review-text">My children love going to the dentist here — something I never thought I'd say! The team is incredibly patient and welcoming. Highly recommended for families.</p>
+      <div class="reviewer">
+        <div class="reviewer-avatar">RL</div>
+        <div>
+          <div class="reviewer-name">R. Linden</div>
+          <div class="reviewer-since">Patient since 2020</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT / BOOKING -->
+<section id="contact">
+  <div class="contact-inner">
+    <div class="contact-info reveal">
+      <div class="section-label">Get In Touch</div>
+      <h2>Book Your Appointment</h2>
+      <p>Ready for a healthier smile? Fill in the form and we'll contact you to confirm your appointment. New patients always welcome.</p>
+      <div class="info-items">
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div class="info-item-text">
+            <div class="info-item-label">Amstelveen Clinic</div>
+            <div class="info-item-val">Amstelveen, Noord-Holland<br>Netherlands</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">📧</div>
+          <div class="info-item-text">
+            <div class="info-item-label">Email</div>
+            <div class="info-item-val">dentalclinicamstelveen@gmail.com</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">🕐</div>
+          <div class="info-item-text">
+            <div class="info-item-label">Opening Hours</div>
+            <div class="info-item-val">Monday – Friday: 8:00 – 17:30<br>Saturday: By appointment</div>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="info-icon">🅿️</div>
+          <div class="info-item-text">
+            <div class="info-item-label">Parking</div>
+            <div class="info-item-val">Free parking available at clinic</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="booking-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label>First Name</label>
+            <input type="text" placeholder="Jan">
+          </div>
+          <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" placeholder="de Vries">
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="+31 6 xxxxxxxx">
+        </div>
+        <div class="form-group">
+          <label>Treatment Needed</label>
+          <select>
+            <option value="" disabled selected>Select a service</option>
+            <option>General Check-up</option>
+            <option>Teeth Cleaning</option>
+            <option>Teeth Whitening</option>
+            <option>Dental Implants</option>
+            <option>Children's Dentistry</option>
+            <option>Emergency Care</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Preferred Date</label>
+          <input type="date">
+        </div>
+        <div class="form-group">
+          <label>Message (optional)</label>
+          <textarea placeholder="Any additional information or questions..."></textarea>
+        </div>
+        <button class="form-submit" onclick="submitForm(event)">Send Appointment Request →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="logo" style="margin-bottom:1rem;display:inline-flex;">
+        <div class="logo-icon" style="width:36px;height:36px;font-size:1.1rem;">🦷</div>
+        <div>
+          <div class="logo-text" style="font-size:1rem;">Dental Clinic Hagens</div>
+          <div class="logo-sub">Est. 1982</div>
+        </div>
+      </a>
+      <p>Providing trusted, personal dental care for patients of all ages in Amstelveen and Aruba for over four decades.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Services</h5>
+      <ul>
+        <li><a href="#services">General Dentistry</a></li>
+        <li><a href="#services">Cosmetic Dentistry</a></li>
+        <li><a href="#services">Dental Implants</a></li>
+        <li><a href="#services">Children's Dentistry</a></li>
+        <li><a href="#services">Emergency Care</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Clinic</h5>
+      <ul>
+        <li><a href="#about">About Us</a></li>
+        <li><a href="#why">Why Choose Us</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#contact">Book Appointment</a></li>
+        <li><a href="mailto:dentalclinicamstelveen@gmail.com">Contact Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Dental Clinic Hagens. All rights reserved.</span>
+    <div class="footer-rating">
+      <span class="footer-stars">★★★★★</span>
+      <span>4.4 on Google Maps</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ─── BG PARTICLE ANIMATION ───
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx = bgCanvas.getContext('2d');
+let bgW, bgH, particles = [];
+
+function resizeBg() {
+  bgW = bgCanvas.width = window.innerWidth;
+  bgH = bgCanvas.height = window.innerHeight;
+}
+resizeBg();
+window.addEventListener('resize', resizeBg);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * bgW;
+    this.y = Math.random() * bgH;
+    this.r = Math.random() * 1.5 + 0.3;
+    this.vx = (Math.random() - 0.5) * 0.3;
+    this.vy = (Math.random() - 0.5) * 0.3;
+    this.alpha = Math.random() * 0.4 + 0.05;
+    this.color = Math.random() > 0.6 ? '#0ea5a0' : '#c9a84c';
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > bgW || this.y < 0 || this.y > bgH) this.reset();
+  }
+  draw(ctx) {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = this.color;
+    ctx.globalAlpha = this.alpha;
+    ctx.fill();
+    ctx.globalAlpha = 1;
+  }
+}
+
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+function drawConnections(ctx) {
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx*dx + dy*dy);
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = 'rgba(14,165,160,0.07)';
+        ctx.lineWidth = 0.5;
+        ctx.stroke();
+      }
+    }
+  }
+}
+
+function animateBg() {
+  bgCtx.clearRect(0, 0, bgW, bgH);
+  // gradient bg
+  const grad = bgCtx.createLinearGradient(0, 0, bgW, bgH);
+  grad.addColorStop(0, '#0a1628');
+  grad.addColorStop(0.5, '#0d1f3c');
+  grad.addColorStop(1, '#0a1628');
+  bgCtx.fillStyle = grad;
+  bgCtx.fillRect(0, 0, bgW, bgH);
+  drawConnections(bgCtx);
+  particles.forEach(p => { p.update(); p.draw(bgCtx); });
+  requestAnimationFrame(animateBg);
+}
+animateBg();
+
+// ─── 3D TOOTH HERO CANVAS ───
+const toothCanvas = document.getElementById('tooth-canvas');
+if (toothCanvas) {
+  const tc = toothCanvas.getContext('2d');
+  let tw = toothCanvas.offsetWidth, th = toothCanvas.offsetHeight;
+  toothCanvas.width = tw * 2; toothCanvas.height = th * 2;
+  tc.scale(2, 2);
+
+  let toothAngle = 0;
+  function drawTooth3D(angle) {
+    tc.clearRect(0, 0, tw, th);
+    const cx = tw / 2, cy = th / 2;
+    const scale = Math.min(tw, th) * 0.35;
+    const rotY = angle;
+
+    // Glow
+    const glow = tc.createRadialGradient(cx, cy, 0, cx, cy, scale * 1.5);
+    glow.addColorStop(0, 'rgba(14,165,160,0.15)');
+    glow.addColorStop(1, 'rgba(14,165,160,0)');
+    tc.fillStyle = glow;
+    tc.fillRect(0, 0, tw, th);
+
+    const s = Math.cos(rotY);
+
+    // Crown shape
+    tc.save();
+    tc.translate(cx, cy - scale * 0.1);
+    
+    // 3D shadow/depth
+    tc.beginPath();
+    tc.ellipse(scale * 0.05 * s, scale * 0.82, scale * 0.32 * Math.abs(s), scale * 0.12, 0, 0, Math.PI * 2);
+    tc.fillStyle = 'rgba(0,0,0,0.3)';
+    tc.fill();
+
+    // Root 1
+    const rx = scale * 0.15 * s;
+    tc.beginPath();
+    tc.moveTo(-scale * 0.12, scale * 0.35);
+    tc.bezierCurveTo(-scale * 0.18 + rx*0.2, scale * 0.55, -scale * 0.25 + rx*0.3, scale * 0.7, -scale * 0.22 + rx, scale * 0.82);
+    tc.bezierCurveTo(-scale * 0.16 + rx, scale * 0.82, -scale * 0.1 + rx*0.5, scale * 0.65, -scale * 0.06, scale * 0.38);
+    const rg1 = tc.createLinearGradient(-scale*0.25, scale*0.35, scale*0.05*s, scale*0.85);
+    rg1.addColorStop(0, '#e8f4f8');
+    rg1.addColorStop(0.5, '#b8d4e0');
+    rg1.addColorStop(1, '#8ab0c0');
+    tc.fillStyle = rg1;
+    tc.fill();
+    tc.strokeStyle = 'rgba(120,180,200,0.5)';
+    tc.lineWidth = 0.5;
+    tc.stroke();
+
+    // Root 2
+    tc.beginPath();
+    tc.moveTo(scale * 0.12, scale * 0.35);
+    tc.bezierCurveTo(scale * 0.18 + rx*0.2, scale * 0.55, scale * 0.25 + rx*0.3, scale * 0.7, scale * 0.22 + rx, scale * 0.82);
+    tc.bezierCurveTo(scale * 0.16 + rx, scale * 0.82, scale * 0.1 + rx*0.5, scale * 0.65, scale * 0.06, scale * 0.38);
+    const rg2 = tc.createLinearGradient(scale*0.05, scale*0.35, scale*0.3*s, scale*0.85);
+    rg2.addColorStop(0, '#e8f4f8');
+    rg2.addColorStop(0.5, '#b8d4e0');
+    rg2.addColorStop(1, '#8ab0c0');
+    tc.fillStyle = rg2;
+    tc.fill();
+    tc.strokeStyle = 'rgba(120,180,200,0.5)';
+    tc.lineWidth = 0.5;
+    tc.stroke();
+
+    // Crown main body
+    tc.beginPath();
+    tc.moveTo(-scale * 0.42, scale * 0.1);
+    tc.bezierCurveTo(-scale * 0.45, -scale * 0.05, -scale * 0.38, -scale * 0.3, -scale * 0.25, -scale * 0.42);
+    tc.bezierCurveTo(-scale * 0.15 + rx*0.1, -scale * 0.52, -scale * 0.05, -scale * 0.48, 0, -scale * 0.42);
+    tc.bezierCurveTo(scale * 0.05, -scale * 0.48, scale * 0.15 + rx*0.1, -scale * 0.52, scale * 0.25, -scale * 0.42);
+    tc.bezierCurveTo(scale * 0.38, -scale * 0.3, scale * 0.45, -scale * 0.05, scale * 0.42, scale * 0.1);
+    tc.bezierCurveTo(scale * 0.4, scale * 0.28, scale * 0.22, scale * 0.38, 0, scale * 0.38);
+    tc.bezierCurveTo(-scale * 0.22, scale * 0.38, -scale * 0.4, scale * 0.28, -scale * 0.42, scale * 0.1);
+    tc.closePath();
+
+    const crownGrad = tc.createLinearGradient(-scale*0.45 + rx*0.5, -scale*0.5, scale*0.45*Math.abs(s) + rx, scale*0.4);
+    crownGrad.addColorStop(0, '#f0f8ff');
+    crownGrad.addColorStop(0.3, '#e0f2f8');
+    crownGrad.addColorStop(0.7, '#b8dcea');
+    crownGrad.addColorStop(1, '#8ec4d8');
+    tc.fillStyle = crownGrad;
+    tc.fill();
+
+    // Highlight
+    tc.beginPath();
+    tc.ellipse(-scale * 0.12 + rx*0.3, -scale * 0.25, scale * 0.1, scale * 0.07, -0.4, 0, Math.PI * 2);
+    tc.fillStyle = 'rgba(255,255,255,0.7)';
+    tc.fill();
+
+    // Teal accent ring
+    tc.beginPath();
+    tc.moveTo(-scale * 0.42, scale * 0.1);
+    tc.bezierCurveTo(-scale * 0.45, -scale * 0.05, -scale * 0.38, -scale * 0.3, -scale * 0.25, -scale * 0.42);
+    tc.bezierCurveTo(-scale * 0.15 + rx*0.1, -scale * 0.52, -scale * 0.05, -scale * 0.48, 0, -scale * 0.42);
+    tc.bezierCurveTo(scale * 0.05, -scale * 0.48, scale * 0.15 + rx*0.1, -scale * 0.52, scale * 0.25, -scale * 0.42);
+    tc.bezierCurveTo(scale * 0.38, -scale * 0.3, scale * 0.45, -scale * 0.05, scale * 0.42, scale * 0.1);
+    tc.bezierCurveTo(scale * 0.4, scale * 0.28, scale * 0.22, scale * 0.38, 0, scale * 0.38);
+    tc.bezierCurveTo(-scale * 0.22, scale * 0.38, -scale * 0.4, scale * 0.28, -scale * 0.42, scale * 0.1);
+    tc.strokeStyle = 'rgba(14,165,160,0.5)';
+    tc.lineWidth = 1.5;
+    tc.stroke();
+
+    tc.restore();
+
+    // Orbit ring
+    tc.save();
+    tc.translate(cx, cy);
+    tc.scale(1, 0.35);
+    tc.beginPath();
+    tc.arc(0, 0, scale * 0.7, 0, Math.PI * 2);
+    tc.strokeStyle = `rgba(14,165,160,${0.1 + 0.05 * Math.sin(angle * 2)})`;
+    tc.lineWidth = 1;
+    tc.setLineDash([5, 8]);
+    tc.stroke();
+    tc.setLineDash([]);
+    tc.restore();
+
+    // Orbiting dot
+    const dotX = cx + scale * 0.7 * Math.cos(angle * 1.5);
+    const dotY = cy + scale * 0.35 * 0.35 * Math.sin(angle * 1.5);
+    tc.beginPath();
+    tc.arc(dotX, dotY, 4, 0, Math.PI * 2);
+    tc.fillStyle = '#0ea5a0';
+    tc.fill();
+    const dg = tc.createRadialGradient(dotX, dotY, 0, dotX, dotY, 12);
+    dg.addColorStop(0, 'rgba(14,165,160,0.4)');
+    dg.addColorStop(1, 'rgba(14,165,160,0)');
+    tc.beginPath();
+    tc.arc(dotX, dotY, 12, 0, Math.PI * 2);
+    tc.fillStyle = dg;
+    tc.fill();
+  }
+
+  function animateTooth() {
+    toothAngle += 0.015;
+    drawTooth3D(toothAngle);
+    requestAnimationFrame(animateTooth);
+  }
+  animateTooth();
+}
+
+// ─── ABOUT MINI TOOTH ───
+const aboutTooth = document.getElementById('about-tooth');
+if (aboutTooth) {
+  const at = aboutTooth.getContext('2d');
+  let atw = aboutTooth.offsetWidth, ath = aboutTooth.offsetHeight;
+  aboutTooth.width = atw * 2; aboutTooth.height = ath * 2;
+  at.scale(2, 2);
+  let atAngle = 0;
+
+  function drawAboutTooth(angle) {
+    at.clearRect(0, 0, atw, ath);
+    const cx = atw / 2, cy = ath / 2;
+    const scale = Math.min(atw, ath) * 0.38;
+
+    const glow = at.createRadialGradient(cx, cy, 0, cx, cy, scale * 1.5);
+    glow.addColorStop(0, 'rgba(201,168,76,0.1)');
+    glow.addColorStop(1, 'rgba(201,168,76,0)');
+    at.fillStyle = glow;
+    at.fillRect(0, 0, atw, ath);
+
+    const s = Math.cos(angle);
+    const rx = scale * 0.1 * s;
+    at.save();
+    at.translate(cx, cy - scale * 0.05);
+
+    // Root
+    at.beginPath();
+    at.moveTo(-scale * 0.08, scale * 0.3);
+    at.bezierCurveTo(-scale * 0.15, scale * 0.5, -scale * 0.2, scale * 0.65, -scale * 0.18 + rx, scale * 0.75);
+    at.bezierCurveTo(-scale * 0.12 + rx, scale * 0.75, -scale * 0.06, scale * 0.58, -scale * 0.04, scale * 0.32);
+    at.fillStyle = 'rgba(180,200,220,0.6)';
+    at.fill();
+
+    at.beginPath();
+    at.moveTo(scale * 0.08, scale * 0.3);
+    at.bezierCurveTo(scale * 0.15, scale * 0.5, scale * 0.2, scale * 0.65, scale * 0.18 + rx, scale * 0.75);
+    at.bezierCurveTo(scale * 0.12 + rx, scale * 0.75, scale * 0.06, scale * 0.58, scale * 0.04, scale * 0.32);
+    at.fillStyle = 'rgba(180,200,220,0.6)';
+    at.fill();
+
+    // Crown
+    at.beginPath();
+    at.moveTo(-scale * 0.4, scale * 0.08);
+    at.bezierCurveTo(-scale * 0.42, -scale * 0.08, -scale * 0.36, -scale * 0.28, -scale * 0.22, -scale * 0.4);
+    at.bezierCurveTo(-scale * 0.1, -scale * 0.48, scale * 0.1, -scale * 0.48, scale * 0.22, -scale * 0.4);
+    at.bezierCurveTo(scale * 0.36, -scale * 0.28, scale * 0.42, -scale * 0.08, scale * 0.4, scale * 0.08);
+    at.bezierCurveTo(scale * 0.38, scale * 0.25, scale * 0.2, scale * 0.34, 0, scale * 0.34);
+    at.bezierCurveTo(-scale * 0.2, scale * 0.34, -scale * 0.38, scale * 0.25, -scale * 0.4, scale * 0.08);
+    at.closePath();
+    const cg = at.createLinearGradient(-scale*0.42 + rx, -scale*0.5, scale*0.42 + rx, scale*0.35);
+    cg.addColorStop(0, '#ffffff');
+    cg.addColorStop(0.5, '#e0f0f8');
+    cg.addColorStop(1, '#a8ccd8');
+    at.fillStyle = cg;
+    at.fill();
+    at.strokeStyle = 'rgba(201,168,76,0.4)';
+    at.lineWidth = 1.5;
+    at.stroke();
+
+    // highlight
+    at.beginPath();
+    at.ellipse(-scale * 0.1 + rx*0.3, -scale * 0.2, scale * 0.08, scale * 0.05, -0.4, 0, Math.PI * 2);
+    at.fillStyle = 'rgba(255,255,255,0.8)';
+    at.fill();
+    at.restore();
+  }
+
+  function animateAboutTooth() {
+    atAngle += 0.012;
+    drawAboutTooth(atAngle);
+    requestAnimationFrame(animateAboutTooth);
+  }
+  animateAboutTooth();
+}
+
+// ─── NAV SCROLL ───
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+});
+
+// ─── HAMBURGER ───
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+  document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+});
+function closeMobile() {
+  hamburger.classList.remove('open');
+  mobileMenu.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ─── SCROLL REVEAL ───
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => observer.observe(el));
+
+// ─── FORM SUBMIT ───
+function submitForm(e) {
+  e.preventDefault();
+  const btn = e.target;
+  btn.textContent = '✓ Request Sent!';
+  btn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+  setTimeout(() => {
+    btn.textContent = 'Send Appointment Request →';
+    btn.style.background = '';
+  }, 3500);
+}
+</script>
+</body>
+</html>
